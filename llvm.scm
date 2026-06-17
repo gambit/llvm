@@ -22,7 +22,7 @@
         ,(string-append cc-options " -Wno-discarded-qualifiers"))
        (##meta-info
         ld-options
-        ,(string-append ld-options " -lLLVM-C"))))
+        ,ld-options)))
 
   (define (missing-llvm)
     (display "*** The Gambit llvm library can't be built because the llvm-config\n")
@@ -77,7 +77,11 @@
                  (loop (cdr dirs)))))))
 
   (define cc-options (llvm-config "--cflags"))
-  (define ld-options (llvm-config "--ldflags"))
+
+  (define ld-options
+    (string-append (llvm-config "--ldflags")
+                   " "
+                   (llvm-config "--libs")))
 
   (gen-meta-info cc-options ld-options))
 
