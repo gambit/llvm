@@ -31,18 +31,32 @@
     (exit 1))
 
   (define (llvm-config option)
-    (define llvm-config-util "llvm-config")
-    (let* ((llvm-config-program
-            (let ((dir
-                   (latest-versionned-subdir-in
-                    '("/opt/homebrew/Cellar/llvm"))))
-              (if dir
-                  (path-expand llvm-config-util (path-expand "bin" dir))
-                  llvm-config-util)))
-           (status
-            (shell-command (string-append llvm-config-program " " option) #t)))
-      (if (= 0 (car status))
-          (with-input-from-string (cdr status) read-line)
+
+    (define llvm-config-names
+      '("llvm-config-25"
+        "llvm-config-24"
+        "llvm-config-23"
+        "llvm-config-22"
+        "llvm-config-21"
+        "llvm-config-20"
+        "llvm-config"))
+
+    (let loop ((names llvm-config-names))
+      (if (pair? names)
+          (let* ((name
+                  (car names))
+                 (llvm-config-program
+                  (let ((dir
+                         (latest-versionned-subdir-in
+                          '("/opt/homebrew/Cellar/llvm"))))
+                    (if dir
+                        (path-expand name (path-expand "bin" dir))
+                        name)))
+                 (status
+                  (shell-command (string-append llvm-config-program " " option) #t)))
+            (if (= 0 (car status))
+                (with-input-from-string (cdr status) read-line)
+                (loop (cdr names))))
           (missing-llvm))))
 
   (define (latest-versionned-subdir-in dirs)
