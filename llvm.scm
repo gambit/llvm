@@ -172,6 +172,8 @@ void c_array_of_" c-type-name "_set(" c-type " *array, int index, " c-type " val
 ;(define-c-array-of size_t)
 ;(define-c-array-of ssize_t)
 
+(c-define-type uint64_t unsigned-int64)
+
 ;;;----------------------------------------------------------------------------
 
 ;;; Interface to LLVM C API.
@@ -645,8 +647,8 @@ LLVMContextSetYieldCallback
  (LLVMContextRef
   unsigned-int
   unsigned-int
-  (pointer unsigned-long-long)
-  (pointer unsigned-long-long))
+  (pointer uint64_t)
+  (pointer uint64_t))
  LLVMAttributeRef)
 
 (define-c-function
@@ -1369,12 +1371,12 @@ LLVMContextSetYieldCallback
 
 (define-c-function
  LLVMConstInt
- (LLVMTypeRef unsigned-long-long LLVMBool)
+ (LLVMTypeRef uint64_t LLVMBool)
  LLVMValueRef)
 
 (define-c-function
  LLVMConstIntOfArbitraryPrecision
- (LLVMTypeRef unsigned-int (pointer unsigned-long-long))
+ (LLVMTypeRef unsigned-int (pointer uint64_t))
  LLVMValueRef)
 
 (define-c-function
@@ -1401,10 +1403,10 @@ LLVMContextSetYieldCallback
 
 (define-c-function
  LLVMConstFPFromBits
- (LLVMTypeRef (pointer unsigned-long-long))
+ (LLVMTypeRef (pointer uint64_t))
  LLVMValueRef)
 
-(define-c-function LLVMConstIntGetZExtValue (LLVMValueRef) unsigned-long-long)
+(define-c-function LLVMConstIntGetZExtValue (LLVMValueRef) uint64_t)
 
 (define-c-function LLVMConstIntGetSExtValue (LLVMValueRef) long-long)
 
@@ -3451,17 +3453,17 @@ LLVMContextSetYieldCallback
 (define-c-function
  LLVMSizeOfTypeInBits
  (LLVMTargetDataRef LLVMTypeRef)
- unsigned-long-long)
+ uint64_t)
 
 (define-c-function
  LLVMStoreSizeOfType
  (LLVMTargetDataRef LLVMTypeRef)
- unsigned-long-long)
+ uint64_t)
 
 (define-c-function
  LLVMABISizeOfType
  (LLVMTargetDataRef LLVMTypeRef)
- unsigned-long-long)
+ uint64_t)
 
 (define-c-function
  LLVMABIAlignmentOfType
@@ -3485,13 +3487,13 @@ LLVMContextSetYieldCallback
 
 (define-c-function
  LLVMElementAtOffset
- (LLVMTargetDataRef LLVMTypeRef unsigned-long-long)
+ (LLVMTargetDataRef LLVMTypeRef uint64_t)
  unsigned-int)
 
 (define-c-function
  LLVMOffsetOfElement
  (LLVMTargetDataRef LLVMTypeRef unsigned-int)
- unsigned-long-long)
+ uint64_t)
 
 ;;;----------------------------------------------------------------------------
 
